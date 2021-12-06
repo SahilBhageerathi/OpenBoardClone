@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>smartboard</title>
+</head>
+
+<body>
+    <div class="icon-pallet">
+        <i class="fas fa-pencil-alt"></i>
+        <i class="fas fa-eraser"></i>
+        <i class="far fa-square"></i>
+        <i class="fas fa-grip-lines-vertical"></i>
+        <div class="red"></div>
+        <div class="green"></div>
+        <div class="blue"></div>
+        <!-- <i class="far fa-times-circle"></i> -->
+    </div>
+    <div class="pencilSpecifications">
+        <div class="pencilwidth">
+            <input type="range" min="2" max="10" value="3">
+        </div>
+        <div class="pencilcolor">
+            <div class="redpencil"></div>
+            <div class="greenpencil"></div>
+            <div class="bluepencil"></div>
+        </div>
+    </div>
+    <div class="eraserSpecifications">
+        <div class="eraserwidth">
+            <input type="range" min="2" max="10" value="5">
+        </div>
+    </div>
+
+    <canvas></canvas>
+</body>
+<!-- JS is injected into html using the script -->
+
+<!-- intialize the canvas board  -->
+<script>
+
+    let canvasBoard = document.querySelector("canvas");
+    canvasBoard.height = window.innerHeight;
+    canvasBoard.width = window.innerWidth;
+    let tool = canvasBoard.getContext("2d");
+    let boardTop = canvasBoard.getBoundingClientRect().top;
+    let boardLeft = canvasBoard.getBoundingClientRect().left;
+    let body = document.querySelector("body");
+
+    let xi, xf, yi, yf;
+    let usePencil = false;
+    let displayPencilOptions = false;
+</script>
+<!-- tool change logic -->
+<script>
+    let rectTool = document.querySelector(".fa-square");
+    let lineTool = document.querySelector(".fa-grip-lines-vertical");
+    let pencilTool = document.querySelector(".fa-pencil-alt");
+    let currTool = "line";
+
+    rectTool.addEventListener("click", function () {
+        currTool = "rect";
+    });
+    lineTool.addEventListener("click", function () {
+        currTool = "line";
+    });
+    pencilTool.addEventListener("click", function () {
+        currTool = "pencil";
+        if(displayPencilOptions)
+        {
+           
+            displayPencilOptions=false;
+        }
+        else
+        {
+            displayPencilOptions=true;
+        }
+
+        if (displayPencilOptions) {
+            pencilSpecifications.style.display = "block";
+        }
+        else {
+            pencilSpecifications.style.display = "none";
+        }
+    });
+</script>
+
+<!-- drawing logic -->
+<script>
+    body.addEventListener("mousedown", function (e) {
+        xi = e.clientX + boardLeft;
+        yi = e.clientY - boardTop;
+
+        if (currTool == "pencil") {
+            usePencil = true;
+            tool.beginPath();
+            tool.moveTo(xi, yi);
+        }
+
+
+    });
+
+    body.addEventListener("mouseup", function (e) {
+        xf = e.clientX + boardLeft;
+        yf = e.clientY - boardTop;
+        usePencil = false;
+        if (currTool == "rect") {
+
+            let width = xf - xi;
+            let height = yf - yi;
+            tool.strokeRect(xi, yi, width, height);
+        }
+        else if (currTool == "line") {
+            tool.beginPath();
+            tool.moveTo(xi, yi);
+            tool.lineTo(xf, yf);
+            tool.stroke();
+        }
+
+
+    });
+
+    body.addEventListener("mousemove", function (e) {
+        if (usePencil == false) {
+            return;
+        }
+
+        xf = e.clientX + boardLeft;
+        yf = e.clientY - boardTop;
+        tool.lineTo(xf, yf);
+        tool.stroke();
+        xi = xf;
+        yi = yf;
+
+    });
+
+
+
+
+</script>
+
+<!-- color change logic -->
+<script>
+    let redcol = document.querySelector(".red");
+    let greencol = document.querySelector(".green");
+    let bluecol = document.querySelector(".blue");
+
+    redcol.addEventListener("click", function () {
+        tool.strokeStyle = "red";
+
+    });
+    bluecol.addEventListener("click", function () {
+        tool.strokeStyle = "blue";
+
+    });
+    greencol.addEventListener("click", function () {
+        tool.strokeStyle = "green";
+
+    });
+
+</script>
+
+<!-- to change size of the pencil -->
+<!-- <script>
+    pencilTool.addEventListener("click", function () {
+        displayPencilOptions = !displayPencilOptions;
+
+        if (displayPencilOptions) {
+            pencilSpecifications.style.display = "block";
+        }
+        else {
+            pencilSpecifications.style.display = "none";
+        }
+    });
+</script> -->
+
+
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .stickyNote{
+            height:175px;
+            width:175px;
+            /* border:1px solid blue; */
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+        }
+        
+        .minimize{
+            height:15px;
+            width:15px;
+            border-radius: 50%;
+            background-color: lightgreen;
+            margin-right:5px;           
+        }
+        .close{
+            height:15px;
+            width:15px;
+            border-radius: 50%;
+            background-color: red;
+            margin-right:5px;
+
+        }
+        .navbar{
+            height:25px;
+            width:175px;
+            display:flex;
+            justify-content:flex-end;
+            align-items: center;
+           /* border:1px solid blue; */
+           box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;  
+
+        }
+        .textarea{
+            height:148px;
+            width:171px;
+            outline:none !important;
+            border:none;
+            border-top: 2px solid red;
+            resize:none;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <button>click</button>
+    <h1>sticky example</h1>
+    <!-- <div class="stickyNote">
+        <div class="navbar">
+          
+          <div class="minimize"></div>
+          <div class="close"></div>
+
+        </div>
+        <textarea class="textarea"></textarea>
+      </div> -->
+</body>
+<script>
+
+let btn=document.querySelector("button");
+let body=document.querySelector("body");
+
+btn.addEventListener("click",function(e){
+ 
+    let stickyNote=document.createElement("div");
+    stickyNote.setAttribute("class",stickyNote);
+    stickyNote.innerHTML=`<div class="navbar">
+          
+          <div class="minimize"></div>
+          <div class="close"></div>
+
+        </div>
+        <textarea class="textarea"></textarea>`;
+        body.appendChild(stickyNote);
+
+    
+});
+</script>
+</html>
